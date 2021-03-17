@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 ### ISSUE
-- Group:  `client`, `server`, `sr`
+- Group: `server`
 - Type: `bug`, `feature`, `delete`
 - Detail: fix actions from client redux
 
