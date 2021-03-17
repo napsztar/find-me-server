@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "fs": "0.0.1-security",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1"
   }
 }
