@@ -28,8 +28,8 @@ assignees: ''
 
 ### Labels
 - Estimated time: `E: 1h`
-- Group : `client`, `server`
-- Sprint: `Sprint__NUMBER__`
+- Group : `server`
+- Sprint: `Sprint__3__`
 - Urgency: `High`, `Middle`, `Low`
 **Additional context**
 Add any other context or screenshots about the feature request here.

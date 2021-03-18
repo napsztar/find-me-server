@@ -1,1 +1,1 @@
-# FindME-server
+# FindMe-server

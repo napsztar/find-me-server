@@ -1,0 +1,35 @@
+{
+  "name": "findme-server",
+  "version": "1.0.0",
+  "description": "findme-server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Outwater/FindMe-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Outwater/FindMe-server/issues"
+  },
+  "homepage": "https://github.com/Outwater/FindMe-server#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.5.1",
+    "sequelize-cli": "^6.2.0"
+  },
+  "devDependencies": {
+    "fs": "0.0.1-security",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1"
+  }
+}
