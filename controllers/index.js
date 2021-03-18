@@ -47,7 +47,11 @@ module.exports = {
     res
       .status(200)
       .send(`${result.nickname}'s account is successfully deleted`);
-  },  
+  },
+  dummy: async (req, res) => {
+    const result = await user.findAll();
+    res.json(result);
+  }
 };
 
 

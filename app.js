@@ -47,7 +47,6 @@ app.post('/users/:userid/update', controller.update);
 // 회원탈퇴
 app.delete('/users/:userid/delete', controller.delete);
 
-
 app.listen(port, () => {
   console.log(`server start at ${port}`);
 });
