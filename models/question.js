@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   question.init({
-    content: DataTypes.STRING
+    content: DataTypes.STRING,
+    NthDay: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'question',

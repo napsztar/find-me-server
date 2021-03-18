@@ -3,16 +3,13 @@ const app = express();
 const port = 5000;
 const cors = require('cors');
 const morgan = require('morgan');
+const controller = require('./controllers');
 
 app.use(cors());
-let func = function () {
-  let foo = 'abc11';
-  return foo;
-};
-
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 
 // 홈
 app.get('/', (req, res) => {
@@ -30,42 +27,25 @@ app.get('/users', (req, res) => {
 });
 
 // 로그인
-app.post('/users/signin', (req, res) => {
-  res.status(200).send("Signin is successed");
-});
+app.post('/users/signin', controller.signin);
 
 // 로그아웃
-app.post('/users/signout', (req, res) => {
-  res.status(200).send("successfully signed out!");
-});
+app.post('/users/signout', controller.signout);
 
 // 회원가입
-app.post('/users/signup', (req, res) => {
-  res.status(201).send("Signup is successed");
-});
+app.post('/users/signup', controller.signup);
 
 // 질문-대답세트
-app.get('/answer/:userid', (req, res) => {
-  res.status(200).send("Success");
-});
+app.get('/answer/:userid', controller.answer);
 
 // 질문
-app.get('/question', (req, res) => {
-  res.status(200).json({
-    id: "PK",
-    content : "content"
-    });
-});
+app.get('/question', controller.question);
 
 // 비밀번호 변경
-app.post('/users/:userid/update', (req, res) => {
-  res.status(200).send("Password is successfully changed");
-});
+app.post('/users/:userid/update', controller.update);
 
 // 회원탈퇴
-app.delete('/users/:userid/delete', (req, res) => {
-  res.status(200).send("Account is successfully deleted");
-});
+app.delete('/users/:userid/delete', controller.delete);
 
 
 app.listen(port, () => {
