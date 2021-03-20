@@ -17,8 +17,11 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', router);
-app.get('/answer/:userid', controller.answer);
-app.get('/question', controller.question);
+app.post('/answer', controller.answer);
+app.post('/answer/add', controller.addAnswer);
+app.post('/answer/read', controller.readAnswer);
+app.post('/answer/edit', controller.editAnswer);
+app.post('/question', controller.question);
 
 app.listen(port, () => {
   console.log(`server start at ${port}`);
