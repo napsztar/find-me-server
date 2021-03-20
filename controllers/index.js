@@ -3,6 +3,12 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 const { answer, question, user } = models;
+const {
+  generateAccessToken,
+  generateRefreshToken,
+  sendRefreshToken,
+  sendAccessToken,
+} = require('../controllers/tokenFunctions');
 module.exports = {
   //--------------------------------------------------------------------------------
   answer: async (req, res) => {
@@ -80,31 +86,29 @@ module.exports = {
   //--------------------------------------------------------------------------------
   signin: async (req, res) => {
     try {
-      const userInfo = await user.findOne({
-        where: { email: req.body.email, password: req.body.password },
-      });
-
-      if (!userInfo) {
-        res.status(401).send({ message: 'Invalid user or Wrong password' });
-      } else {
-        const ACCESS_SECRET = process.env.ACCESS_SECRET;
-        const accessToken = jwt.sign(
-          {
-            id: userInfo.id,
-            nickname: userInfo.nickname,
-            email: userInfo.email,
-            createdAt: userInfo.createdAt,
-            updatedAt: userInfo.updatedAt,
+      const { email, password } = req.body;
+      user
+        .findOne({
+          where: {
+            email,
+            password,
           },
-          ACCESS_SECRET,
-          { expiresIn: '24h' },
-        );
+        })
+        .then(data => {
+          if (!data) {
+            // return res.status(401).send({ data: null, message: 'not authorized' });
+            return res.json({ message: 'not authorized' });
+          }
+          delete data.dataValues.password;
+          const accessToken = generateAccessToken(data.dataValues);
+          const refreshToken = generateRefreshToken(data.dataValues);
 
-        res.status(200).json({
-          data: { accessToken: accessToken },
-          message: 'Signin is successed',
+          sendRefreshToken(res, refreshToken);
+          sendAccessToken(res, accessToken);
+        })
+        .catch(err => {
+          res.status(401).json({ message: 'Invalid user or Wrong password' });
         });
-      }
     } catch (err) {
       res.status(500).json({ message: 'Server is broken' });
     }
