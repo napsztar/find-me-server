@@ -1,4 +1,7 @@
 const models = require('../models');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+dotenv.config();
 const { answer, question, user } = models;
 module.exports = {
   //--------------------------------------------------------------------------------
@@ -70,12 +73,40 @@ module.exports = {
 
       res.status(200).json('Signup is successed');
     } catch (err) {
-      res.status(500).send('server is broken');
+      res.status(500).send('Server is broken');
     }
   },
   //--------------------------------------------------------------------------------
   signin: async (req, res) => {
-    res.status(200).json('Signin is successed');
+    try {
+      const userInfo = await user.findOne({
+        where: { email: req.body.email, password: req.body.password },
+      });
+
+      if (!userInfo) {
+        res.status(401).send('Invalid user or Wrong password');
+      } else {
+        const ACCESS_SECRET = process.env.ACCESS_SECRET;
+        const accessToken = jwt.sign(
+          {
+            id: userInfo.id,
+            nickname: userInfo.nickname,
+            email: userInfo.email,
+            createdAt: userInfo.createdAt,
+            updatedAt: userInfo.updatedAt,
+          },
+          ACCESS_SECRET,
+          { expiresIn: '24h' },
+        );
+
+        res.status(200).json({
+          data: { accessToken: accessToken },
+          message: 'Signin is successed',
+        });
+      }
+    } catch (err) {
+      res.status(500).send('Server is broken');
+    }
   },
   //--------------------------------------------------------------------------------
   signout: async (req, res) => {
@@ -102,7 +133,7 @@ module.exports = {
   //--------------------------------------------------------------------------------
   userinfo: async (req, res) => {
     res.status(200).json({
-      id: PK,
+      id: 'PK',
       password: 'password',
       email: 'email',
       nickname: 'nickname',
