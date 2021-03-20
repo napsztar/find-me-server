@@ -1,6 +1,16 @@
 const models = require('../../models');
 const { user } = models;
 
+const dotenv = require('dotenv');
+dotenv.config();
+
+const {
+  generateAccessToken,
+  generateRefreshToken,
+  sendRefreshToken,
+  sendAccessToken,
+} = require('../tokenFunctions');
+
 module.exports = {
   // 화원가입
   signup: async (req, res) => {
@@ -20,12 +30,38 @@ module.exports = {
 
       res.status(200).json('Signup is successed');
     } catch (err) {
-      res.status(500).send('server is broken');
+      res.status(500).send('Server is broken');
     }
   },
   // 로그인
   signin: async (req, res) => {
-    res.status(200).json('Signin is successed');
+    try {
+      const { email, password } = req.body;
+      user
+        .findOne({
+          where: {
+            email,
+            password,
+          },
+        })
+        .then(data => {
+          if (!data) {
+            // return res.status(401).send({ data: null, message: 'not authorized' });
+            return res.json({ message: 'not authorized' });
+          }
+          delete data.dataValues.password;
+          const accessToken = generateAccessToken(data.dataValues);
+          const refreshToken = generateRefreshToken(data.dataValues);
+
+          sendRefreshToken(res, refreshToken);
+          sendAccessToken(res, accessToken);
+        })
+        .catch(err => {
+          res.status(401).json({ message: 'Invalid user or Wrong password' });
+        });
+    } catch (err) {
+      res.status(500).json({ message: 'Server is broken' });
+    }
   },
   // 로그아웃
   signout: async (req, res) => {

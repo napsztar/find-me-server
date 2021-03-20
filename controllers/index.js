@@ -1,7 +1,3 @@
-const models = require('../models');
-const answers = require('./answers');
-const users = require('./users');
-
 module.exports = {
   // 비어있는 질문-대답 생성
   intro: (req, res) => {
