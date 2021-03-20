@@ -21,7 +21,7 @@ app.post('/answer', controller.answer);
 app.post('/answer/add', controller.addAnswer);
 app.post('/answer/read', controller.readAnswer);
 app.post('/answer/edit', controller.editAnswer);
-app.post('/question', controller.question);
+app.post('/intro', controller.intro);
 
 app.listen(port, () => {
   console.log(`server start at ${port}`);
