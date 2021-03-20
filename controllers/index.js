@@ -1,5 +1,14 @@
 const models = require('../models');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+dotenv.config();
 const { answer, question, user } = models;
+const {
+  generateAccessToken,
+  generateRefreshToken,
+  sendRefreshToken,
+  sendAccessToken,
+} = require('../controllers/tokenFunctions');
 module.exports = {
   //--------------------------------------------------------------------------------
   answer: async (req, res) => {
@@ -71,12 +80,38 @@ module.exports = {
 
       res.status(200).json('Signup is successed');
     } catch (err) {
-      res.status(500).send('server is broken');
+      res.status(500).send('Server is broken');
     }
   },
   //--------------------------------------------------------------------------------
   signin: async (req, res) => {
-    res.status(200).json('Signin is successed');
+    try {
+      const { email, password } = req.body;
+      user
+        .findOne({
+          where: {
+            email,
+            password,
+          },
+        })
+        .then(data => {
+          if (!data) {
+            // return res.status(401).send({ data: null, message: 'not authorized' });
+            return res.json({ message: 'not authorized' });
+          }
+          delete data.dataValues.password;
+          const accessToken = generateAccessToken(data.dataValues);
+          const refreshToken = generateRefreshToken(data.dataValues);
+
+          sendRefreshToken(res, refreshToken);
+          sendAccessToken(res, accessToken);
+        })
+        .catch(err => {
+          res.status(401).json({ message: 'Invalid user or Wrong password' });
+        });
+    } catch (err) {
+      res.status(500).json({ message: 'Server is broken' });
+    }
   },
   //--------------------------------------------------------------------------------
   signout: async (req, res) => {
@@ -103,7 +138,7 @@ module.exports = {
   //--------------------------------------------------------------------------------
   userinfo: async (req, res) => {
     res.status(200).json({
-      id: PK,
+      id: 'PK',
       password: 'password',
       email: 'email',
       nickname: 'nickname',
