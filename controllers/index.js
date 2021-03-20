@@ -29,9 +29,10 @@ module.exports = {
       questionId: 1,
       questionContent: '내 삶의 목적은 무엇인가?',
       answerId: 1,
+      answerContent: '내 삶의 목적은 자아실현에 있다.',
       createdAt: '2020-03-18T16:22:32.000',
       updatedAt: '2020-03-18T16:22:32.000',
-      questionedAt: '2020-03-19T16:22:32.000',
+      questionAt: '2020-03-19T16:22:32.000',
     };
     res.status(200).json(result);
   },
