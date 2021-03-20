@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', router);
-app.get('/answer', controller.answer);
+app.post('/answer', controller.answer);
 app.post('/answer/add', controller.addAnswer);
 app.post('/answer/read', controller.readAnswer);
 app.post('/answer/edit', controller.editAnswer);
