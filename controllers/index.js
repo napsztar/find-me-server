@@ -84,7 +84,7 @@ module.exports = {
       });
 
       if (!userInfo) {
-        res.status(401).send('Invalid user or Wrong password');
+        res.status(401).send({ message: 'Invalid user or Wrong password' });
       } else {
         const ACCESS_SECRET = process.env.ACCESS_SECRET;
         const accessToken = jwt.sign(
@@ -105,7 +105,7 @@ module.exports = {
         });
       }
     } catch (err) {
-      res.status(500).send('Server is broken');
+      res.status(500).json({ message: 'Server is broken' });
     }
   },
   //--------------------------------------------------------------------------------
