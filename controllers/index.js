@@ -5,16 +5,16 @@ module.exports = {
   answer: async (req, res) => {
     const result = [
       {
-        'answer-id': 1,
-        'question-content': '내 삶의 목적은 무엇인가?',
+        answerId: 1,
+        questionContent: '내 삶의 목적은 무엇인가?',
       },
       {
-        'answer-id': 2,
-        'question-content': '사람은 변할 수 있을까?',
+        answerId: 2,
+        questionContent: '사람은 변할 수 있을까?',
       },
       {
-        'answer-id': 3,
-        'question-content': '최근에 읽고 있는 글이나 책이 있다면?',
+        answerId: 3,
+        questionContent: '최근에 읽고 있는 글이나 책이 있다면?',
       },
     ];
     res.status(200).json(result);
