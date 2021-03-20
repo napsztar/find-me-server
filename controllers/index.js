@@ -44,7 +44,7 @@ module.exports = {
   },
   //--------------------------------------------------------------------------------
 
-  question: (req, res) => {
+  intro: (req, res) => {
     const result = {
       questionId: 1,
       questionContent: '내 삶의 목적은 무엇인가?',
