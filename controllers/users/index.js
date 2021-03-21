@@ -48,7 +48,9 @@ module.exports = {
         .then(data => {
           if (!data) {
             // return res.status(401).send({ data: null, message: 'not authorized' });
-            return res.json({ message: 'not authorized' });
+            return res
+              .status(401)
+              .json({ message: 'Invalid user or Wrong password' });
           }
 
           delete data.dataValues.password;
@@ -56,9 +58,6 @@ module.exports = {
           const refreshToken = generateRefreshToken(data.dataValues);
           sendRefreshToken(res, refreshToken);
           sendAccessToken(res, accessToken);
-        })
-        .catch(err => {
-          res.status(401).json({ message: 'Invalid user or Wrong password' });
         });
     } catch (err) {
       res.status(500).json({ message: 'Server is broken' });
