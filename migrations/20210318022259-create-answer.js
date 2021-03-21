@@ -13,15 +13,11 @@ module.exports = {
       },
       questionAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
       },
     });
   },
@@ -29,4 +25,3 @@ module.exports = {
     await queryInterface.dropTable('answers');
   },
 };
-
