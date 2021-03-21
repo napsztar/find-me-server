@@ -1,5 +1,6 @@
 const models = require('../../models');
 const { user } = models;
+const { sign, verify } = require('jsonwebtoken');
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -49,10 +50,10 @@ module.exports = {
             // return res.status(401).send({ data: null, message: 'not authorized' });
             return res.json({ message: 'not authorized' });
           }
+
           delete data.dataValues.password;
           const accessToken = generateAccessToken(data.dataValues);
           const refreshToken = generateRefreshToken(data.dataValues);
-
           sendRefreshToken(res, refreshToken);
           sendAccessToken(res, accessToken);
         })
