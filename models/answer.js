@@ -20,7 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       content: DataTypes.STRING,
       userId: DataTypes.INTEGER,
       questionId: DataTypes.INTEGER,
-      questionAt: DataTypes.INTEGER,
+      questionAt: { type: DataTypes.DATE, defaultValue: new Date() },
+      createdAt: DataTypes.DATE,
+      updatedAt: DataTypes.DATE,
     },
     {
       sequelize,

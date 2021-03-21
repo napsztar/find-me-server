@@ -6,32 +6,22 @@ module.exports = {
       {
         id: 1,
         content: '내 삶의 목적은 무엇인가?',
-        createdAt: '2020-03-18 16:22:32',
-        updatedAt: '2020-03-18 16:22:32',
       },
       {
         id: 2,
         content: '사람은 변할 수 있을까?',
-        createdAt: '2020-03-18 16:22:32',
-        updatedAt: '2020-03-18 16:22:32',
       },
       {
         id: 3,
         content: '최근에 읽고 있는 글이나 책이 있다면?',
-        createdAt: '2020-03-18 16:22:32',
-        updatedAt: '2020-03-18 16:22:32',
       },
       {
         id: 4,
         content: '최근 내 삶에서 가장 결별하고 싶은 것은?',
-        createdAt: '2020-03-18 16:22:32',
-        updatedAt: '2020-03-18 16:22:32',
       },
       {
         id: 5,
         content: '가장 최근에 방문한 식당은? 무엇을 먹었는가?',
-        createdAt: '2020-03-18 16:22:32',
-        updatedAt: '2020-03-18 16:22:32',
       },
     ]);
     await queryInterface.bulkInsert('users', [
@@ -40,24 +30,18 @@ module.exports = {
         nickname: 'carrot',
         email: 'carrot@carrot.com',
         password: 'carrot',
-        createdAt: '2020-03-18 16:22:32',
-        updatedAt: '2020-03-18 16:22:32',
       },
       {
         id: 2,
         nickname: 'today',
         email: 'today@today.com',
         password: 'today',
-        createdAt: '2020-03-18 16:22:32',
-        updatedAt: '2020-03-18 16:22:32',
       },
       {
         id: 3,
         nickname: 'todayCarrot',
         email: 'todayCarrot@todayCarrot.com',
         password: 'todayCarrot',
-        createdAt: '2020-03-18 16:22:32',
-        updatedAt: '2020-03-18 16:22:32',
       },
     ]);
     await queryInterface.bulkInsert('answers', [

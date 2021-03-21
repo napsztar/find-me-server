@@ -13,11 +13,15 @@ module.exports = {
       },
       questionAt: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,
+      },
+      createdAt: {
+        allowNull: true,
+        type: Sequelize.DATE,
       },
       updatedAt: {
-        allowNull: false,
-        type: Sequelize.STRING,
+        allowNull: true,
+        type: Sequelize.DATE,
       },
     });
   },
