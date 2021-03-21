@@ -35,15 +35,12 @@ module.exports = {
         attributes: ['id', 'questionAt'],
       })
       .then(data => {
-        res.status(200).json(data);
+        res.status(200).json({
+          questionId: data.dataValues.question.dataValues.id,
+          questionContent: data.dataValues.question.dataValues.content,
+          answerId: data.dataValues.id,
+          questionAt: data.dataValues.questionAt,
+        });
       });
-
-    // 이전 샘플 데이터
-    const result = {
-      questionId: 1,
-      questionContent: '내 삶의 목적은 무엇인가?',
-      answerId: 1,
-      questionAt: '2020-03-18T16:22:32.000Z',
-    };
   },
 };
