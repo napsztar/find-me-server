@@ -67,12 +67,7 @@ module.exports = {
   // 유저정보 조회
   userinfo: async (req, res) => {
     try {
-      const token = req.cookies.accessToken;
-      if (!token) {
-        return res.status(400).json({ message: 'invalid access token' });
-      }
-
-      const tokenData = isAuthorized(token);
+      const tokenData = isAuthorized(req);
       const queryData = await user.findOne({
         where: { email: tokenData.email },
       });
