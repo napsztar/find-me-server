@@ -28,8 +28,28 @@ module.exports = {
   },
 
   //질문에 대한 대답 작성 (add)
-  addAnswer: (req, res) => {
-    res.status(200).json({ message: 'Success' });
+  addAnswer: async (req, res) => {
+    const accessTokenData = isAuthorized(req);
+    if (!accessTokenData) {
+      return res.json({ data: null, message: 'invalid access token' });
+    }
+
+    const answerId = req.body.answerId;
+    const answerContent = req.body.answerContent;
+
+    await answer.findOne({ where: { id: answerId } }).then(async data => {
+      // 요청한 사용자가 작성한 글의 주인이 맞는지 확인
+      if (data.userId !== accessTokenData.id) {
+        res.status(401).json({ data: null, message: 'not authorized user' });
+      }
+      // 맞다면 content 바꾸고, 생성날짜 확인하여 저장
+      await answer.update(
+        { content: answerContent, createdAt: new Date() }, //ToDo: 현지 시간으로 바꾸기 (관련 이슈 헬프데스크에 올려놓은 상태)
+        { where: { id: answerId } },
+      );
+
+      res.status(200).json({ message: 'A anwser has been successfully added' });
+    });
   },
 
   //질문-대답 상세페이지 (read/detail)
@@ -63,9 +83,29 @@ module.exports = {
   },
 
   //대답 수정 응답 (edit)
-  editAnswer: (req, res) => {
-    res.status(200).json({
-      message: 'answer is successfully updated',
+  editAnswer: async (req, res) => {
+    const accessTokenData = isAuthorized(req);
+    if (!accessTokenData) {
+      return res.json({ data: null, message: 'invalid access token' });
+    }
+
+    const answerId = req.body.answerId;
+    const answerContent = req.body.answerContent;
+
+    await answer.findOne({ where: { id: answerId } }).then(async data => {
+      // 요청한 사용자가 작성한 글의 주인이 맞는지 확인
+      if (data.userId !== accessTokenData.id) {
+        res.status(401).json({ data: null, message: 'not authorized user' });
+      }
+      // 맞다면 content 바꾸고, 생성날짜 확인하여 저장
+      await answer.update(
+        { content: answerContent, updatedAt: new Date() }, //ToDo: 현지 시간으로 바꾸기 (관련 이슈 헬프데스크에 올려놓은 상태)
+        { where: { id: answerId } },
+      );
+
+      res
+        .status(200)
+        .json({ message: 'A anwser has been successfully updated' });
     });
   },
 };

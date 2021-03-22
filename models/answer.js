@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: 'answer',
       timestamps: false,
+      dialectOptions: {
+        dateStrings: true,
+        typeCast: true,
+      },
     },
   );
   return answer;
