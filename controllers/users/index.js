@@ -1,16 +1,9 @@
 const models = require('../../models');
 const { user } = models;
-const { sign, verify } = require('jsonwebtoken');
-
 const dotenv = require('dotenv');
 dotenv.config();
 
-const {
-  generateAccessToken,
-  generateRefreshToken,
-  sendRefreshToken,
-  sendAccessToken,
-} = require('../tokenFunctions');
+const { generateAccessToken, sendAccessToken } = require('../tokenFunctions');
 
 module.exports = {
   // 화원가입
@@ -55,8 +48,6 @@ module.exports = {
 
           delete data.dataValues.password;
           const accessToken = generateAccessToken(data.dataValues);
-          const refreshToken = generateRefreshToken(data.dataValues);
-          sendRefreshToken(res, refreshToken);
           sendAccessToken(res, accessToken);
         });
     } catch (err) {
@@ -65,7 +56,11 @@ module.exports = {
   },
   // 로그아웃
   signout: async (req, res) => {
-    res.status(200).json('successfully signed out!');
+    if (!req.cookies.accessToken) res.status(400).json('not authorized');
+    else {
+      res.clearCookie('accessToken');
+      res.json('successfully signed out!');
+    }
   },
 
   // 유저정보 조회

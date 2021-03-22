@@ -1,5 +1,6 @@
 const models = require('../models');
 const { isAuthorized } = require('./tokenFunctions');
+const { getUserIdByToken } = require('../common');
 const { answer, question } = models;
 
 const moment = require('moment');
@@ -11,6 +12,7 @@ module.exports = {
   // 비어있는 질문-대답 생성
   intro: async (req, res) => {
     const accessTokenData = isAuthorized(req);
+    const requestUserId = await getUserIdByToken(accessTokenData);
 
     if (!accessTokenData) {
       return res.json({ data: null, message: 'invalid access token' });
@@ -19,19 +21,15 @@ module.exports = {
     // 생성 될 질문번호
     const questionIndex =
       (await answer.max('questionId', {
-        where: { userId: accessTokenData.id },
-      })) + 1 || 1;
+        where: { userId: requestUserId },
+      })) + 1;
 
     // 빈 질문지 생성
     const koreaTime = await moment.tz(moment().toDate(), 'Asia/Seoul').format();
     await answer.create({
-      //ToDo: 현지 시간으로 바꾸기 (관련 이슈 헬프데스크에 올려놓은 상태)
-      content: ``,
-      questionAt: koreaTime,
-      updatedAt: new Date().toLocaleString('en-US', {
-        timeZone: 'Asia/Seoul',
-      }),
-      userId: accessTokenData.id,
+      content: '',
+      questiondAt: moment().toDate(),
+      userId: requestUserId,
       questionId: questionIndex,
     });
 
@@ -39,7 +37,7 @@ module.exports = {
     await answer
       .findOne({
         include: [{ model: question, where: { id: questionIndex } }],
-        where: { userId: accessTokenData.id },
+        where: { userId: requestUserId },
         attributes: ['id', 'questionAt'],
       })
       .then(data => {
