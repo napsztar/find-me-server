@@ -1,21 +1,28 @@
+const models = require('../../models');
+const { user, question, answer } = models;
+const { isAuthorized } = require('../tokenFunctions');
 module.exports = {
   //질문 list 출력
   answer: async (req, res) => {
-    const result = [
-      {
-        answerId: 1,
-        questionContent: '내 삶의 목적은 무엇인가?',
-      },
-      {
-        answerId: 2,
-        questionContent: '사람은 변할 수 있을까?',
-      },
-      {
-        answerId: 3,
-        questionContent: '최근에 읽고 있는 글이나 책이 있다면?',
-      },
-    ];
-    res.status(200).json(result);
+    //사용자 토큰 확인 및 userId 접근
+    const accessTokenData = isAuthorized(req);
+
+    // DB에서 해당 사용자의 모든 질문 가져오기
+    const queryData = await answer.findAll({
+      include: [{ model: question, attributes: ['content'] }],
+      where: { userId: accessTokenData.id },
+      attributes: ['id'],
+    });
+
+    // Client가 요구하는 data format으로 변경
+    const reformatResult = queryData.map(function (data) {
+      return {
+        answerId: data.id,
+        questionContent: data.question.content,
+      };
+    });
+
+    res.status(200).json(reformatResult);
   },
 
   //질문에 대한 대답 작성 (add)

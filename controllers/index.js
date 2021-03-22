@@ -1,7 +1,7 @@
 const models = require('../models');
 const { isAuthorized } = require('./tokenFunctions');
 const { answer, question } = models;
-require('dotenv').config();
+
 const moment = require('moment');
 moment().format('YYYY-MM-DD');
 module.exports = {
