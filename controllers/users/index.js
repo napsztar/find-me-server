@@ -48,7 +48,6 @@ module.exports = {
 
           delete data.dataValues.password;
           const accessToken = generateAccessToken(data.dataValues);
-          console.log(accessToken);
           sendAccessToken(res, accessToken);
         });
     } catch (err) {
