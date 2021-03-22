@@ -56,7 +56,11 @@ module.exports = {
   },
   // 로그아웃
   signout: async (req, res) => {
-    res.status(200).json('successfully signed out!');
+    if (!req.cookies.accessToken) res.status(400).json('not authorized');
+    else {
+      res.clearCookie('accessToken');
+      res.json('successfully signed out!');
+    }
   },
 
   // 유저정보 조회
