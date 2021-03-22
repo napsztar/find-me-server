@@ -1,16 +1,9 @@
 const models = require('../../models');
 const { user } = models;
-const { sign, verify } = require('jsonwebtoken');
-
 const dotenv = require('dotenv');
 dotenv.config();
 
-const {
-  generateAccessToken,
-  generateRefreshToken,
-  sendRefreshToken,
-  sendAccessToken,
-} = require('../tokenFunctions');
+const { generateAccessToken, sendAccessToken } = require('../tokenFunctions');
 
 module.exports = {
   // 화원가입
@@ -55,8 +48,6 @@ module.exports = {
 
           delete data.dataValues.password;
           const accessToken = generateAccessToken(data.dataValues);
-          const refreshToken = generateRefreshToken(data.dataValues);
-          sendRefreshToken(res, refreshToken);
           sendAccessToken(res, accessToken);
         });
     } catch (err) {
