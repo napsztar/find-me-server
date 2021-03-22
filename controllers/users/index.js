@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const { generateAccessToken, sendAccessToken } = require('../tokenFunctions');
+const { isAuthorized } = require('../tokenFunctions');
 
 module.exports = {
   // 화원가입
@@ -65,12 +66,30 @@ module.exports = {
 
   // 유저정보 조회
   userinfo: async (req, res) => {
-    res.status(200).json({
-      id: 'PK',
-      password: 'password',
-      email: 'email',
-      nickname: 'nickname',
-    });
+    try {
+      const token = req.cookies.accessToken;
+      if (!token) {
+        return res.status(400).json({ message: 'invalid access token' });
+      }
+
+      const tokenData = isAuthorized(token);
+      const queryData = await user.findOne({
+        where: { email: tokenData.email },
+      });
+
+      if (!queryData) {
+        return res.status(401).send('not authorized');
+      }
+
+      res.status(200).json({
+        id: queryData.id,
+        password: queryData.password,
+        email: queryData.email,
+        nickname: queryData.nickname,
+      });
+    } catch (err) {
+      res.status(500).send('Server is broken');
+    }
   },
   // 비밀번호 변경
   update: async (req, res) => {

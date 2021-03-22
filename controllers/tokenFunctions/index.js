@@ -23,15 +23,14 @@ module.exports = {
 
   // acc토큰 있는지 확인해서 있으면 verify
   isAuthorized: req => {
-    const accToken = req.cookies.accessToken;
-    if (!accToken) {
+    if (!req) {
       return null;
     }
     try {
-      if (accToken.length < 400) {
-        return verify(accToken, process.env.ACCESS_SECRET);
-      } else if (accToken.length > 400) {
-        return jwtDecode(accToken);
+      if (req.length < 400) {
+        return verify(req, process.env.ACCESS_SECRET);
+      } else if (req.length > 400) {
+        return jwtDecode(req);
       }
     } catch (err) {
       // return null if invalid token
