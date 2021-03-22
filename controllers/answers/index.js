@@ -6,13 +6,15 @@ module.exports = {
   answer: async (req, res) => {
     //사용자 토큰 확인 및 userId 접근
     const accessTokenData = isAuthorized(req);
+    const requestUserId = await getUserIdByToken(accessTokenData);
+
     if (!accessTokenData) {
       return res.json({ data: null, message: 'invalid access token' });
     }
     // DB에서 해당 사용자의 모든 질문 가져오기
     const queryData = await answer.findAll({
       include: [{ model: question, attributes: ['content'] }],
-      where: { userId: accessTokenData.id },
+      where: { userId: requestUserId },
       attributes: ['id'],
     });
 
