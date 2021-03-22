@@ -67,9 +67,9 @@ module.exports = {
   // 유저정보 조회
   userinfo: async (req, res) => {
     try {
-      const tokenData = isAuthorized(req);
+      const accessTokenData = isAuthorized(req);
       const queryData = await user.findOne({
-        where: { email: tokenData.email },
+        where: { email: accessTokenData.email },
       });
 
       if (!queryData) {
