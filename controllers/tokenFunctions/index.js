@@ -20,14 +20,17 @@ module.exports = {
   },
 
   // acc토큰 보내기
-  sendAccessToken: (res, accessToken) => {
-    res.json({ data: { accessToken }, message: 'Signin is successed' });
+  sendAccessToken: (res, accToken) => {
+    res.json({
+      data: { accessToken: accToken },
+      message: 'Signin is successed',
+    });
   },
 
   // acc토큰 다시 보내기
-  resendAccessToken: (res, accessToken, data) => {
+  resendAccessToken: (res, accToken, data) => {
     res.json({
-      data: { accessToken, userInfo: data },
+      data: { accessToken: accToken, userInfo: data },
       message: 'resending AccessToken is successed',
     });
   },
