@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const Querystring = require('querystring');
 const jwtDecode = require('jwt-decode');
-const { sendRefreshToken, sendAccessToken } = require('../tokenFunctions');
+const { sendAccessToken } = require('../tokenFunctions');
 const models = require('../../models');
 const { user } = models;
 
@@ -34,7 +34,6 @@ module.exports = async (req, res) => {
       });
 
     const idToken = result.data.id_token;
-    const refToken = result.data.refresh_token;
     const decodedToken = jwtDecode(idToken);
     const getName = decodedToken.name;
     const getEmail = decodedToken.email;
@@ -49,7 +48,6 @@ module.exports = async (req, res) => {
       });
     }
 
-    sendRefreshToken(res, refToken);
     sendAccessToken(res, idToken);
   } catch (err) {
     console.log(err);
