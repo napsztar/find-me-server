@@ -4,6 +4,9 @@ const { getUserIdByToken } = require('../common');
 const { answer, question } = models;
 
 const moment = require('moment');
+require('moment-timezone');
+moment.tz.setDefault('Asia/Seoul');
+moment().format();
 moment().format('YYYY-MM-DD');
 module.exports = {
   // 비어있는 질문-대답 생성
@@ -22,6 +25,7 @@ module.exports = {
       })) + 1;
 
     // 빈 질문지 생성
+    const koreaTime = await moment.tz(moment().toDate(), 'Asia/Seoul').format();
     await answer.create({
       content: '',
       questiondAt: moment().toDate(),
