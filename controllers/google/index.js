@@ -7,25 +7,17 @@ const { sendRefreshToken, sendAccessToken } = require('../tokenFunctions');
 const models = require('../../models');
 const { user } = models;
 
-function getURLParams(url) {
-  var result = {};
-  url.replace(/[?&]{1}([^=&#]+)=([^&#]*)/g, function (s, k, v) {
-    result[k] = decodeURIComponent(v);
-  });
-  return result;
-}
-
 module.exports = async (req, res) => {
   try {
-    const myCode = getURLParams(req.url).code;
+    const authCode = req.body.code;
     const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
     const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
     let body = Querystring['stringify']({
-      code: myCode,
+      code: authCode,
       client_id: CLIENT_ID,
       client_secret: CLIENT_SECRET,
-      redirect_uri: `http://localhost:5000/callback`,
+      redirect_uri: `http://localhost:3000`,
       grant_type: `authorization_code`,
     });
 
@@ -47,7 +39,6 @@ module.exports = async (req, res) => {
     const getName = decodedToken.name;
     const getEmail = decodedToken.email;
 
-    // DB 에 이미 해당유저 저장되어 있으면 가입과정 패스
     const data = await user.findOne({
       where: { email: getEmail },
     });

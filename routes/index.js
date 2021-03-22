@@ -8,6 +8,6 @@ router.get('/', (req, res) => {
 });
 
 router.post('/intro', controller.intro);
-router.get('/callback', google);
+router.post('/callback', google);
 
 module.exports = router;
