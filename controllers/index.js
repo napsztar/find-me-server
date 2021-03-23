@@ -24,7 +24,6 @@ module.exports = {
       })) + 1 || 1;
 
     // 빈 질문지 생성
-    const koreaTime = await moment.tz(moment().toDate(), 'Asia/Seoul').format();
     await answer.create({
       content: '',
       questionAt: moment().toDate(),
