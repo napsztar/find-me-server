@@ -7,11 +7,10 @@ module.exports = {
   answer: async (req, res) => {
     //사용자 토큰 확인 및 userId 접근
     const accessTokenData = isAuthorized(req);
-    const requestUserId = await getUserIdByToken(accessTokenData);
-
     if (!accessTokenData) {
       return res.json({ data: null, message: 'invalid access token' });
     }
+    const requestUserId = await getUserIdByToken(accessTokenData);
     // DB에서 해당 사용자의 모든 질문 가져오기
     const queryData = await answer.findAll({
       include: [{ model: question, attributes: ['content'] }],
@@ -33,11 +32,11 @@ module.exports = {
   //질문에 대한 대답 작성 (add)
   addAnswer: async (req, res) => {
     const accessTokenData = isAuthorized(req);
-    const requestUserId = await getUserIdByToken(accessTokenData);
 
     if (!accessTokenData) {
       return res.json({ data: null, message: 'invalid access token' });
     }
+    const requestUserId = await getUserIdByToken(accessTokenData);
 
     const answerId = req.body.answerId;
     const answerContent = req.body.answerContent;
@@ -53,7 +52,7 @@ module.exports = {
         { where: { id: answerId } },
       );
 
-      res.status(200).json({ message: 'A anwser has been successfully added' });
+      res.status(200).json({ message: 'A answer has been successfully added' });
     });
   },
 
@@ -61,11 +60,10 @@ module.exports = {
   readAnswer: async (req, res) => {
     //사용자 토큰 확인 및 userId 접근
     const accessTokenData = isAuthorized(req);
-    const requestUserId = await getUserIdByToken(accessTokenData);
     if (!accessTokenData) {
       return res.json({ data: null, message: 'invalid access token' });
     }
-
+    const requestUserId = await getUserIdByToken(accessTokenData);
     // 특정 answerId에 해당하는 answer&question 출력
     const answerId = req.body.answerId;
 
@@ -102,11 +100,11 @@ module.exports = {
   //대답 수정 응답 (edit)
   editAnswer: async (req, res) => {
     const accessTokenData = isAuthorized(req);
-    const requestUserId = await getUserIdByToken(accessTokenData);
     if (!accessTokenData) {
       return res.json({ data: null, message: 'invalid access token' });
     }
 
+    const requestUserId = await getUserIdByToken(accessTokenData);
     const answerId = req.body.answerId;
     const answerContent = req.body.answerContent;
 
@@ -123,7 +121,7 @@ module.exports = {
 
       res
         .status(200)
-        .json({ message: 'A anwser has been successfully updated' });
+        .json({ message: 'A answer has been successfully updated' });
     });
   },
 };

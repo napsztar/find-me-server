@@ -12,23 +12,22 @@ module.exports = {
   // 비어있는 질문-대답 생성
   intro: async (req, res) => {
     const accessTokenData = isAuthorized(req);
-    const requestUserId = await getUserIdByToken(accessTokenData);
-
     if (!accessTokenData) {
       return res.json({ data: null, message: 'invalid access token' });
     }
 
+    const requestUserId = await getUserIdByToken(accessTokenData);
     // 생성 될 질문번호
     const questionIndex =
       (await answer.max('questionId', {
         where: { userId: requestUserId },
-      })) + 1;
+      })) + 1 || 1;
 
     // 빈 질문지 생성
     const koreaTime = await moment.tz(moment().toDate(), 'Asia/Seoul').format();
     await answer.create({
       content: '',
-      questiondAt: moment().toDate(),
+      questionAt: moment().toDate(),
       userId: requestUserId,
       questionId: questionIndex,
     });
